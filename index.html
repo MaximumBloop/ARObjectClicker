@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+		<script>
+		</script>
+	</head>
+	<body>
+		<a-scene>
+			<a-camera>
+				<a-cursor color="#FAFAFA"></cursor>
+			</a-camera>
+
+			<a-box 
+				color="red" 
+				position="-1 1.5 -3"
+				animation__hover="startEvents: mouseenter; property: scale; to: 2.5 2.5 2.5; dur: 300"
+				animation__hoverexit="startEvents: mouseleave; property: scale; to: 1 1 1; dur: 300"
+				animation__floating="
+					property: object3D.position.y; 
+					to: 2.2; 
+					dir: alternate; 
+					dur: 2000; 
+					loop:true"
+				scale-on-mouseenter
+				>
+			</a-box>
+		</a-scene>
+	</body>
+</html>
