@@ -5,15 +5,70 @@
 		<script>
 			AFRAME.registerComponent('look-at-camera', {
 				init: function () {
-					const cameraEl = this.el.sceneEl.querySelector('[camera]');
+					this.cameraEl = this.el.sceneEl.querySelector('[camera]');
 				},
 
 				tick: function () {
 					if (this.cameraEl) {
 						this.el.object3D.lookAt(this.cameraEl.object3D.position);
+						// console.log(this.el.object3D.rotation);
 					} else
 					{
 						this.cameraEl = this.el.sceneEl.querySelector('[camera]');
+					}
+				}
+			})
+		</script>
+		<script>
+			AFRAME.registerComponent('carousel-item', {
+				init: function () {
+					this.angle = 0;
+					this.userFollow = Array.from(this.el.parentElement.children)
+						.find(child => child.hasAttribute('look-at-camera'));
+					
+					this.myDirection = new THREE.Vector3();
+					this.lac = new THREE.Vector3();
+				},
+
+				tick: function () {
+					this.userFollow.object3D.getWorldDirection(this.lac);
+					this.el.object3D.getWorldDirection(this.myDirection);
+					
+					const targetScale = this.angleLikeness(this.myDirection.multiplyScalar(-1), this.lac);
+
+					this.el.object3D.scale.set(targetScale, targetScale, targetScale);
+					console.log(this.el.object3D.scale);
+				},
+
+				angleLikeness: function (a, b) {
+					return (1 + a.dot(b)) / 2;
+				}
+			})
+		</script>
+		<script>
+			AFRAME.registerComponent('carousel', {
+				schema: {
+					radius: { type: 'number', default: 1 }
+				},
+
+				init: function () {
+					this.items = Array.from(this.el.children).filter(child => child.hasAttribute('carousel-item'));
+					this.centralAngle = 360 / this.items.length;
+
+					this.layoutItems();
+				},
+
+				layoutItems: function () {
+					for (let i = 0; i < this.items.length; i++)
+					{
+						const itemAngleDegrees = i * this.centralAngle;
+						const itemAngleRadians = THREE.MathUtils.degToRad(itemAngleDegrees);
+
+						const x = this.data.radius * Math.sin(itemAngleRadians);
+						const z = this.data.radius * Math.cos(itemAngleRadians);
+						const y = 0.2;
+						this.items[i].object3D.position.set(x, y, z);
+						this.items[i].object3D.lookAt(new THREE.Vector3(0.0, 0.2, 0.0));
 					}
 				}
 			})
@@ -28,7 +83,7 @@
 				<a-cursor color="#FAFAFA"></cursor>
 			</a-camera>
 
-			<a-box 
+			<!-- <a-box 
 				color="red" 
 				position="0 1 -2"
 				scale="0.5 0.5 0.5"
@@ -42,7 +97,15 @@
 					loop:true"
 				look-at-camera
 				>
-			</a-box>
+			</a-box> -->
+
+			<a-cylinder carousel radius="2" height=".1">
+				<a-entity look-at-camera></a-entity>
+				<a-box color='#0D0D0D' carousel-item></a-box>
+				<a-box color='#FF0000' carousel-item></a-box>
+				<a-box color='#00FF00' carousel-item></a-box>
+				<a-box color='#0000FF' carousel-item></a-box>
+			</a-cylinder>
 		</a-scene>
 	</body>
 </html>
