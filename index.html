@@ -28,6 +28,7 @@
 					
 					this.myDirection = new THREE.Vector3();
 					this.lac = new THREE.Vector3();
+					this.height = this.el.getAttribute('geometry')?.height || 1;
 				},
 
 				tick: function () {
@@ -45,6 +46,7 @@
 				}
 			})
 		</script>
+
 		<script>
 			AFRAME.registerComponent('carousel', {
 				schema: {
@@ -68,7 +70,8 @@
 						const z = this.data.radius * Math.cos(itemAngleRadians);
 						const y = 0.2;
 						this.items[i].object3D.position.set(x, y, z);
-						this.items[i].object3D.lookAt(new THREE.Vector3(0.0, 0.2, 0.0));
+						const boxCenter = this.items[i].getAttribute('geometry').height / 2;
+						this.items[i].object3D.lookAt(new THREE.Vector3(0.0, boxCenter, 0.0));
 					}
 				}
 			})
@@ -79,8 +82,12 @@
 			reflection="directionalLight: a-light[type=directional]"
 			xr-mode-ui="XRMode: xr"
 			>
+			<a-assets>
+				<img id="github" src="images/test.png">
+			</a-assets>
+
 			<a-camera>
-				<a-cursor color="#FAFAFA"></cursor>
+				<a-cursor color="#FAFAFA"></a-cursor>
 			</a-camera>
 
 			<!-- <a-box 
@@ -101,7 +108,15 @@
 
 			<a-cylinder carousel scale=".2 .2 .2" radius="2" height=".1">
 				<a-entity look-at-camera></a-entity>
-				<a-box color='#0D0D0D' carousel-item></a-box>
+				<a-box color='#0D0D0D' carousel-item>
+					<a-image
+						src="#github"
+						position="0 0 4"
+						rotation="270 0 0"
+						scale="5 5 5"
+						material="shader: flat"
+						></a-image>
+				</a-box>
 				<a-box color='#FF0000' carousel-item></a-box>
 				<a-box color='#00FF00' carousel-item></a-box>
 				<a-box color='#0000FF' carousel-item></a-box>
