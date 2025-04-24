@@ -47,7 +47,7 @@
 			})
 		</script>
 		<script>
-			AFRAME.registerComponent('clickable-link', 
+			AFRAME.registerComponent('clickable-link', {
 				schema: {
 					hyperlink: {type: 'string', default: ''}
 				}
@@ -62,7 +62,7 @@
 						console.log(link);
 					});
 				}
-			)
+			});
 		</script>
 
 		<script>
