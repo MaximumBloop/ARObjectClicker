@@ -107,7 +107,7 @@
 				<img id="linkedin" src="images/linkedin.png">
 			</a-assets>
 
-			<a-camera>
+			<a-camera raycaster="objects: .clickable">
 				<a-cursor color="#FAFAFA"></a-cursor>
 			</a-camera>
 
@@ -131,6 +131,7 @@
 				<a-entity look-at-camera></a-entity>
 				<a-box color='#0D0D0D' carousel-item>
 					<a-image
+						class="clickable"
 						src="#github"
 						position="0 0 4"
 						rotation="90 0 0"
@@ -141,6 +142,7 @@
 				</a-box>
 				<a-box color='#FF0000' carousel-item>
 					<a-image
+						class="clickable"
 						src="#linkedin"
 						position="0 0 4"
 						rotation="90 0 0"
