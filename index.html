@@ -60,7 +60,8 @@
 							console.log("Invalid or missing link");
 							return;
 						}
-						console.log(link);
+						console.log("Navigating to: ", link);
+						window.open(link, '_blank');
 					});
 				}
 			});
