@@ -49,8 +49,9 @@
 		<script>
 			AFRAME.registerComponent('clickable-link', {
 				schema: {
-					hyperlink: {type: 'string', default: ''}
-				}
+					hyperlink: { type: 'string', default: '' }
+				},
+
 				init: function () {
 					this.el.addEventListener("click", () => {
 						const link = this.hyperlink;
