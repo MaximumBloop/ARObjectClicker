@@ -3,11 +3,13 @@
 	<head>
 		<script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
 		<script>
+			// Camera follow script
 			AFRAME.registerComponent('look-at-camera', {
 				init: function () {
 					this.cameraEl = this.el.sceneEl.querySelector('[camera]');
 				},
 
+				// Updates once every frame
 				tick: function () {
 					if (this.cameraEl) {
 						this.el.object3D.lookAt(this.cameraEl.object3D.position);
@@ -20,6 +22,7 @@
 			})
 		</script>
 		<script>
+			// Items on the carousel
 			AFRAME.registerComponent('carousel-item', {
 				init: function () {
 					this.angle = 0;
@@ -31,6 +34,7 @@
 					this.height = this.el.getAttribute('geometry')?.height || 1;
 				},
 
+				// Updates once every frame
 				tick: function () {
 					this.userFollow.object3D.getWorldDirection(this.lac);
 					this.el.object3D.getWorldDirection(this.myDirection);
@@ -41,12 +45,14 @@
 					// console.log(this.el.object3D.scale);
 				},
 
+				// Maps DOT product of input vectors to range (0, 1)
 				angleLikeness: function (a, b) {
 					return (1 + a.dot(b)) / 2;
 				}
 			})
 		</script>
 		<script>
+			// Allows objects to be clicked/tapped to access external links
 			AFRAME.registerComponent('clickable-link', {
 				schema: {
 					hyperlink: { type: 'string', default: '' }
@@ -69,6 +75,7 @@
 		</script>
 
 		<script>
+			// The carousel base
 			AFRAME.registerComponent('carousel', {
 				schema: {
 					radius: { type: 'number', default: 1 }
@@ -99,6 +106,7 @@
 		</script>
 	</head>
 	<body>
+		<!-- Main scene -->
 		<a-scene
 			reflection="directionalLight: a-light[type=directional]"
 			xr-mode-ui="XRMode: xr"
@@ -113,6 +121,7 @@
 				<a-cursor color="#FAFAFA"></a-cursor>
 			</a-camera>
 
+			<!-- Carousel -->
 			<a-cylinder id="carousel-base" 
 				carousel="radius: 2.5"
 				scale=".2 .2 .2"
@@ -120,7 +129,9 @@
 				radius="3"
 				animation__rotate="property: rotation; to: 0 360 0; loop: true; dur: 10000"
 				>
+				<!-- Origin for scaleable entities -->
 				<a-entity look-at-camera></a-entity>
+				<!-- Github Link -->
 				<a-box color='#0D0D0D' carousel-item>
 					<a-image
 						class="clickable"
@@ -132,6 +143,7 @@
 						clickable-link='hyperlink: https://github.com/MaximumBloop'
 						></a-image>
 				</a-box>
+				<!-- LinkedIn Link -->
 				<a-box color='#FF0000' carousel-item>
 					<a-image
 						class="clickable"
